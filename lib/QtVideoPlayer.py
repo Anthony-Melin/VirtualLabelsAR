@@ -3,6 +3,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from lib.VideoPlayer import VideoPlayer
+from ui.Ui_VideoPlayer import Ui_VideoPlayer
 from numpy import ndarray
 
         
@@ -15,62 +16,14 @@ class QtVideoPlayer(QtWidgets.QWidget):
     def __init__(self, filename, parent=None, refresh=int(1000/60)):
         
         QtWidgets.QWidget.__init__(self, parent)
+        
         VideoPlayer(filename).interface(self)
-        self.setupUi()
+        
+        self.ui = Ui_VideoPlayer()
+        self.ui.setupUi(self)
         
         self.setRefresh(refresh)
-        self.timeSlider.setMaximum(int(self.videoPlayer.TIME))
-
-    
-    def setupUi(self):
-        self.setObjectName("qtVideoPlayer")
-        self.resize(532, 41)
-        self.gridLayout = QtWidgets.QGridLayout(self)
-        self.gridLayout.setObjectName("gridLayout")
-        self.stopButton = QtWidgets.QPushButton(self)
-        self.stopButton.setEnabled(True)
-        self.stopButton.setObjectName("stopButton")
-        self.gridLayout.addWidget(self.stopButton, 0, 2, 1, 1)
-        self.playButton = QtWidgets.QPushButton(self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.playButton.sizePolicy().hasHeightForWidth())
-        self.playButton.setSizePolicy(sizePolicy)
-        self.playButton.setMaximumSize(QtCore.QSize(1000, 1000))
-        self.playButton.setShortcut("")
-        self.playButton.setObjectName("playButton")
-        self.gridLayout.addWidget(self.playButton, 0, 0, 1, 1)
-        self.timeSlider = QtWidgets.QSlider(self)
-        self.timeSlider.setProperty("value", 0)
-        self.timeSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.timeSlider.setObjectName("timeSlider")
-        self.gridLayout.addWidget(self.timeSlider, 0, 3, 1, 1)
-        self.pauseButton = QtWidgets.QPushButton(self)
-        self.pauseButton.setEnabled(True)
-        self.pauseButton.setMinimumSize(QtCore.QSize(75, 0))
-        self.pauseButton.setMaximumSize(QtCore.QSize(16777215, 23))
-        self.pauseButton.setObjectName("pauseButton")
-        self.gridLayout.addWidget(self.pauseButton, 0, 1, 1, 1)
-        self.timeLabel = QtWidgets.QLabel(self)
-        self.timeLabel.setAlignment(QtCore.Qt.AlignCenter)
-        self.timeLabel.setObjectName("timeLabel")
-        self.gridLayout.addWidget(self.timeLabel, 0, 4, 1, 1)
-
-        self.retranslateUi()
-        self.playButton.clicked.connect(self.play)
-        self.pauseButton.clicked.connect(self.pause)
-        self.stopButton.clicked.connect(self.stop)
-        self.timeSlider.actionTriggered['int'].connect(self.setCurrentTime)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self):
-        _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("qtVideoPlayer", "Form"))
-        self.stopButton.setText(_translate("qtVideoPlayer", "Stop"))
-        self.playButton.setText(_translate("qtVideoPlayer", "Play"))
-        self.pauseButton.setText(_translate("qtVideoPlayer", "Pause"))
-        self.timeLabel.setText(_translate("qtVideoPlayer", "0:00"))
+        self.ui.timeSlider.setMaximum(int(self.videoPlayer.TIME))
         
         
     def setRefresh(self, t):
@@ -87,10 +40,10 @@ class QtVideoPlayer(QtWidgets.QWidget):
             self.frameUpdate.emit(frame)
             
             m, s = map(lambda n: str(n).zfill(2), self.videoPlayer.getRecordTime(mode=2))
-            self.timeLabel.setText(f"{m}:{s}")
+            self.ui.timeLabel.setText(f"{m}:{s}")
             
             v = int(self.videoPlayer.getRecordTime(mode=1))
-            self.timeSlider.setValue(v)
+            self.ui.timeSlider.setValue(v)
         
         
     @staticmethod

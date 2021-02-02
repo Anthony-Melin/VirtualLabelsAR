@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>windowsDevicePortal</class>
- <widget class="QWidget" name="windowsDevicePortal">
+ <class>WindowsDevicePortal</class>
+ <widget class="QWidget" name="WindowsDevicePortal">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -103,7 +103,7 @@
   <connection>
    <sender>connectButton</sender>
    <signal>clicked()</signal>
-   <receiver>windowsDevicePortal</receiver>
+   <receiver>WindowsDevicePortal</receiver>
    <slot>setupConnection()</slot>
    <hints>
     <hint type="sourcelabel">
