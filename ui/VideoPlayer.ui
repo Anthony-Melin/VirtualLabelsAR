@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>qtVideoPlayer</class>
- <widget class="QWidget" name="qtVideoPlayer">
+ <class>VideoPlayer</class>
+ <widget class="QWidget" name="VideoPlayer">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -14,16 +14,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="2">
-    <widget class="QPushButton" name="stopButton">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="text">
-      <string>Stop</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QPushButton" name="playButton">
      <property name="sizePolicy">
@@ -88,6 +78,16 @@
      </property>
     </widget>
    </item>
+   <item row="0" column="2">
+    <widget class="QPushButton" name="stopButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="text">
+      <string>Stop</string>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <resources/>
@@ -95,7 +95,7 @@
   <connection>
    <sender>playButton</sender>
    <signal>clicked()</signal>
-   <receiver>qtVideoPlayer</receiver>
+   <receiver>VideoPlayer</receiver>
    <slot>play()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -111,7 +111,7 @@
   <connection>
    <sender>pauseButton</sender>
    <signal>clicked()</signal>
-   <receiver>qtVideoPlayer</receiver>
+   <receiver>VideoPlayer</receiver>
    <slot>pause()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -125,14 +125,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>stopButton</sender>
-   <signal>clicked()</signal>
-   <receiver>qtVideoPlayer</receiver>
-   <slot>stop()</slot>
+   <sender>timeSlider</sender>
+   <signal>actionTriggered(int)</signal>
+   <receiver>VideoPlayer</receiver>
+   <slot>setCurrentTime(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>208</x>
-     <y>20</y>
+     <x>373</x>
+     <y>19</y>
     </hint>
     <hint type="destinationlabel">
      <x>265</x>
@@ -141,14 +141,14 @@
    </hints>
   </connection>
   <connection>
-   <sender>timeSlider</sender>
-   <signal>actionTriggered(int)</signal>
-   <receiver>qtVideoPlayer</receiver>
-   <slot>setCurrentTime(int)</slot>
+   <sender>stopButton</sender>
+   <signal>clicked()</signal>
+   <receiver>VideoPlayer</receiver>
+   <slot>stop()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>373</x>
-     <y>19</y>
+     <x>208</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
      <x>265</x>

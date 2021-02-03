@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from ui.Ui_WindowsDevicePortal import Ui_WindowsDevicePortal
 from lib.WindowsDevicePortal import WindowsDevicePortal
 
 
@@ -16,86 +17,31 @@ class QtWindowsDevicePortal(QtWidgets.QWidget):
     
     
     def __init__(self, parent=None):
+        
         QtWidgets.QWidget.__init__(self, parent)
-        self.setupUi()
+        
         WindowsDevicePortal().interface(self)
+        
+        self.ui = Ui_WindowsDevicePortal()
+        self.ui.setupUi(self)
     
-        self.batteryTimer = QtCore.QTimer()
-        self.batteryTimer.timeout.connect(self.updateBattery)
-        self.batteryTimer.start(2000)
-    
-    def setupUi(self):
-        self.setObjectName("self")
-        self.resize(234, 140)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.sizePolicy().hasHeightForWidth())
-        self.setSizePolicy(sizePolicy)
-        self.setMinimumSize(QtCore.QSize(0, 0))
-        self.gridLayout = QtWidgets.QGridLayout(self)
-        self.gridLayout.setObjectName("gridLayout")
-        self.hostLabel = QtWidgets.QLabel(self)
-        self.hostLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.hostLabel.setObjectName("hostLabel")
-        self.gridLayout.addWidget(self.hostLabel, 0, 0, 1, 1)
-        self.hostInput = QtWidgets.QLineEdit(self)
-        self.hostInput.setObjectName("hostInput")
-        self.gridLayout.addWidget(self.hostInput, 0, 1, 1, 1)
-        self.loginLabel = QtWidgets.QLabel(self)
-        self.loginLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.loginLabel.setObjectName("loginLabel")
-        self.gridLayout.addWidget(self.loginLabel, 1, 0, 1, 1)
-        self.loginInput = QtWidgets.QLineEdit(self)
-        self.loginInput.setAutoFillBackground(False)
-        self.loginInput.setObjectName("loginInput")
-        self.gridLayout.addWidget(self.loginInput, 1, 1, 1, 1)
-        self.passwordLabel = QtWidgets.QLabel(self)
-        self.passwordLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.passwordLabel.setObjectName("passwordLabel")
-        self.gridLayout.addWidget(self.passwordLabel, 2, 0, 1, 1)
-        self.passwordInput = QtWidgets.QLineEdit(self)
-        self.passwordInput.setObjectName("passwordInput")
-        self.gridLayout.addWidget(self.passwordInput, 2, 1, 1, 1)
-        self.connectButton = QtWidgets.QPushButton(self)
-        self.connectButton.setObjectName("connectButton")
-        self.gridLayout.addWidget(self.connectButton, 3, 0, 1, 1)
-        self.batteryLabel = QtWidgets.QLabel(self)
-        self.batteryLabel.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTop|QtCore.Qt.AlignTrailing)
-        self.batteryLabel.setObjectName("batteryLabel")
-        self.gridLayout.addWidget(self.batteryLabel, 4, 0, 1, 1)
-        self.batteryLevel = QtWidgets.QLabel(self)
-        self.batteryLevel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
-        self.batteryLevel.setObjectName("batteryLevel")
-        self.gridLayout.addWidget(self.batteryLevel, 4, 1, 1, 1)
-
-        self.retranslateUi()
-        self.connectButton.clicked.connect(self.setupConnection)
-        QtCore.QMetaObject.connectSlotsByName(self)
-
-    def retranslateUi(self):
-        _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("self", "Form"))
-        self.hostLabel.setText(_translate("self", "Host"))
-        self.passwordLabel.setText(_translate("self", "Password"))
-        self.loginLabel.setText(_translate("self", "Login"))
-        self.connectButton.setText(_translate("self", "Connect"))
-        self.batteryLabel.setText(_translate("self", "Battery:"))
-        self.batteryLevel.setText(_translate("self", "/"))
+        self.ui.batteryTimer = QtCore.QTimer()
+        self.ui.batteryTimer.timeout.connect(self.updateBattery)
+        self.ui.batteryTimer.start(2000)
 
 
     def _disableInputs(self, b):
         
-        self.connectButton.setDisabled(b)
-        self.hostInput.setDisabled(b)
-        self.loginInput.setDisabled(b)
-        self.passwordInput.setDisabled(b)
+        self.ui.connectButton.setDisabled(b)
+        self.ui.hostInput.setDisabled(b)
+        self.ui.loginInput.setDisabled(b)
+        self.ui.passwordInput.setDisabled(b)
 
 
     def updateBattery(self):
         
         b = self.getBattery()
-        self.batteryLevel.setText(b)
+        self.ui.batteryLevel.setText(b)
         
         if not self.isConnected():
             self._disableInputs(False)
@@ -103,9 +49,9 @@ class QtWindowsDevicePortal(QtWidgets.QWidget):
 
     def setupConnection(self):
         
-        host = self.hostInput.text()
-        login = self.loginInput.text()
-        password = self.passwordInput.text()
+        host = self.ui.hostInput.text()
+        login = self.ui.loginInput.text()
+        password = self.ui.passwordInput.text()
         
         self.connect(host, auth=(login, password), certfile="resources/holocert")
         
@@ -121,9 +67,9 @@ class QtWindowsDevicePortal(QtWidgets.QWidget):
         app = QtWidgets.QApplication(sys.argv)
         wdp = QtWindowsDevicePortal()
         
-        wdp.hostInput.setText(config["host"])
-        wdp.loginInput.setText(config["auth"][0])
-        wdp.passwordInput.setText(config["auth"][1])
+        wdp.ui.hostInput.setText(config["host"])
+        wdp.ui.loginInput.setText(config["auth"][0])
+        wdp.ui.passwordInput.setText(config["auth"][1])
         
         wdp.show()
         sys.exit(app.exec_())
