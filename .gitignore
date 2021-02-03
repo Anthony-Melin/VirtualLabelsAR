@@ -126,4 +126,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-/.vs/VirtualLabelsAR (perso)/v16/.suo
+.suo
